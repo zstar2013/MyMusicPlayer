@@ -4,6 +4,7 @@ package com.example.mymusicplayer;
 import android.graphics.Canvas;
 import android.os.Bundle;  
 import android.view.MenuItem;
+import android.view.animation.Interpolator;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;  
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.CanvasTransformer;
@@ -36,13 +37,29 @@ public class MainActivity extends SlidingFragmentActivity {
     		@Override
     		public void transformCanvas(Canvas canvas, float percentOpen) {
     			
-    			float scale = (float) (percentOpen*0.25 + 0.75);  
-                canvas.scale(scale, scale, canvas.getWidth()/2, canvas.getHeight()/2);
+    			
+    			//动画3
+    			canvas.translate(0, canvas.getHeight() * (1 - interp.getInterpolation(percentOpen)));       
+    			
+    			//动画2
+    			//canvas.scale(percentOpen, 1, 0, 0);   
+    			
+    			//动画1
+    			/*float scale = (float) (percentOpen*0.25 + 0.75);  
+                canvas.scale(scale, scale, canvas.getWidth()/2, canvas.getHeight()/2);*/
     			
     		}
     	};
 		
 	}
+    
+    private static Interpolator interp = new Interpolator() {  
+        @Override  
+        public float getInterpolation(float t) {  
+            t -= 1.0f;  
+            return t * t * t + 1.0f;  
+        }         
+    }; 
 
 	/** 
      * 初始化滑动菜单 
