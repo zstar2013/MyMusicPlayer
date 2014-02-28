@@ -21,6 +21,7 @@ import android.widget.SimpleAdapter;
 
 import com.example.entry.AppConstant;
 import com.example.entry.Mp3Info;
+import com.example.utils.MediaUtil;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;  
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.CanvasTransformer;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
@@ -41,7 +42,7 @@ public class MainActivity extends SlidingFragmentActivity {
         //初始化滑动菜单  
         initSlidingMenu();  
         
-        setListAdpter(getMp3Infos());
+        setListAdpter(MediaUtil.getMp3Infos(this));
         
         
         getActionBar().setDisplayHomeAsUpEnabled(true);  
@@ -156,46 +157,6 @@ public class MainActivity extends SlidingFragmentActivity {
     
     
     List<Mp3Info> mp3Infos;
-    /**
-	* 用于从数据库中查询歌曲的信息，保存在List当中
-	*
-	* @return
-	*/
-	public List<Mp3Info> getMp3Infos() {
-		Cursor cursor = getContentResolver().query(
-			MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, null, null,
-			MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
-		mp3Infos = new ArrayList<Mp3Info>();
-		for (int i = 0; i < cursor.getCount(); i++) {
-			Mp3Info mp3Info = new Mp3Info();
-			cursor.moveToNext();
-			long id = cursor.getLong(cursor
-				.getColumnIndex(MediaStore.Audio.Media._ID));	//音乐id
-			String title = cursor.getString((cursor	
-				.getColumnIndex(MediaStore.Audio.Media.TITLE)));//音乐标题
-			String artist = cursor.getString(cursor
-				.getColumnIndex(MediaStore.Audio.Media.ARTIST));//艺术家
-			long duration = cursor.getLong(cursor
-				.getColumnIndex(MediaStore.Audio.Media.DURATION));//时长
-			long size = cursor.getLong(cursor
-				.getColumnIndex(MediaStore.Audio.Media.SIZE));	//文件大小
-			String url = cursor.getString(cursor
-				.getColumnIndex(MediaStore.Audio.Media.DATA));				//文件路径
-		int isMusic = cursor.getInt(cursor
-			.getColumnIndex(MediaStore.Audio.Media.IS_MUSIC));//是否为音乐
-		if (isMusic != 0) {		//只把音乐添加到集合当中
-			mp3Info.setId(id);
-			mp3Info.setTitle(title);
-			mp3Info.setArtist(artist);
-			mp3Info.setDuration(duration);
-			mp3Info.setSize(size);
-			mp3Info.setUrl(url);
-			mp3Infos.add(mp3Info);
-			}
-		}
-		Log.v("musicplayer", "-------------------"+mp3Infos.size());
-	return mp3Infos;
-	}
 	
 	private SimpleAdapter mAdapter;
 	
@@ -211,17 +172,7 @@ public class MainActivity extends SlidingFragmentActivity {
 	 * @param mp3Infos
 	 */
 	public void setListAdpter(List<Mp3Info> mp3Infos) {
-		List<HashMap<String, String>> mp3list = new ArrayList<HashMap<String, String>>();
-		for (Iterator iterator = mp3Infos.iterator(); iterator.hasNext();) {
-			Mp3Info mp3Info = (Mp3Info) iterator.next();
-			HashMap<String, String> map = new HashMap<String, String>();
-			map.put("title", mp3Info.getTitle());
-			map.put("Artist", mp3Info.getArtist());
-			map.put("duration", String.valueOf(mp3Info.getDuration()));
-			map.put("size", String.valueOf(mp3Info.getSize()));
-			map.put("url", mp3Info.getUrl());
-			mp3list.add(map);
-		}
+		List<HashMap<String, String>> mp3list =MediaUtil.getMusicMaps(mp3Infos);		
 		mAdapter = new SimpleAdapter(this, mp3list,
 				R.layout.row_of_music, new String[] { "title", "Artist", "duration" },
 				new int[] { R.id.music_title, R.id.music_Artist, R.id.music_duration });
