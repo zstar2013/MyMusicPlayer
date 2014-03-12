@@ -14,6 +14,7 @@
 package com.example.mymusicplayer;
 
 
+import com.example.aidl.IMusicService;
 import com.example.entry.AppConstant;
 
 import android.annotation.SuppressLint;
@@ -22,6 +23,8 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.IBinder;
+import android.os.RemoteException;
+import android.util.Log;
 
 @SuppressLint("NewApi")
 public class PlayerService extends Service {
@@ -120,6 +123,39 @@ public class PlayerService extends Service {
 			}
 		}
 	}
+	
+	private final IMusicService.Stub mBinder = new IMusicService.Stub() {
+
+		@Override
+		public void play() throws RemoteException {
+			
+			Log.v("music", "aidl play!");
+			
+		}
+
+		@Override
+		public void pause() throws RemoteException {
+			
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void stop() throws RemoteException {
+			
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onDestroy() throws RemoteException {
+			
+			// TODO Auto-generated method stub
+			
+		}
+
+		
+	};
 	
 }
 

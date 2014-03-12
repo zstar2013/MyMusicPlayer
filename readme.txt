@@ -7,3 +7,5 @@
 3.后台播放在notification界面显示
 
 4.背景替换
+
+5.SharedPreferences菜单界面

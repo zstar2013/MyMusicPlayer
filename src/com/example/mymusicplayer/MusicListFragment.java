@@ -13,8 +13,15 @@
 
 package com.example.mymusicplayer;
 
+import com.example.entry.MyApplication;
+
+import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 /**
  * ClassName:MusicListFragment
@@ -31,9 +38,18 @@ public class MusicListFragment extends ListFragment {
 
 	public void onActivityCreated(android.os.Bundle savedInstanceState) {	
 		super.onActivityCreated(savedInstanceState);
-		
-		Log.v("musicplayer", "---------------sub create");
 	};
+	
+	
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		
+		// TODO Auto-generated method stub
+		super.onViewCreated(view, savedInstanceState);
+		Log.v("musicplayer", "---------------sub onViewCreated");
+		
+		
+	}
 	
 	
 	
